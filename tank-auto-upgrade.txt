@@ -3,7 +3,7 @@
 setInterval(handlePots, 250);
 setInterval(attackTarget, 250);
 setInterval(loot, 250);
-setInterval(upgradeItem, 1000);
+setInterval(upgradeItem, 2000);
 
 // HEAL + MP
 function handlePots() {
@@ -104,16 +104,34 @@ function upgradeItem() {
 					if (buyScroll0 == true) {	
 						buy("scroll0", 1);
 						// LOOK FOR SCROLL THEN UPGRADE
-						for (var k = 0; k < invLength; k++) upgrade(i, k);
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll0")
+								upgrade(i, k);
+						}
+					}
+					else {
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll0")
+								upgrade(i, k);
+						}
 					}
 				}
 			}
-			else if (character.items[i].level < 7) {
+			else if (character.items[i].level == 4 || character.items[i].level < 7) {
 				if (character.gold > 50000) {
 					if (buyScroll1 == true) {
 						buy("scroll1", 1);
 						// LOOK FOR SCROLL THEN UPGRADE
-						for (var k = 0; k < invLength; k++) upgrade(i, k);
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll1")
+								upgrade(i, k);
+						}
+					}
+					else {
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll1")
+								upgrade(i, k);
+						}
 					}
 				}
 			}
