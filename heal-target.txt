@@ -1,0 +1,60 @@
+// HEAL
+
+setInterval(handlePots, 250);
+setInterval(healTarget, 250);
+setInterval(curseTarget, 250);
+setInterval(loot, 250);
+
+// HP/MP POTS
+function handlePots() {
+    //Heal and restore mana if required
+    if (character.hp < 600 && new Date() > parent.next_potion) {
+    buy("hpot1",1);
+        parent.use('hp');
+    }
+    if (character.mp < 2000 && new Date() > parent.next_potion) {
+    buy("mpot1",1);
+        parent.use('mp');
+    }
+}
+
+// HEAL TARGET
+function healTarget() {
+	var target = get_player('Paladick');
+	if (!target) {
+		set_message("No Target");
+		return;
+	}
+	else if (target.hp != target.max_hp) {
+		heal(target);
+		set_message("Healing");
+	}
+	else
+		set_message("Waiting to Heal");
+	
+	if (!in_attack_range(target)) {
+		move (
+			character.real_x + (target.real_x-character.real_x) / 2,
+			character.real_y + (target.real_y-character.real_y) / 2
+		);
+	}
+}
+
+// CURSE TARGET OF
+var lastcurse;
+function curseTarget() {
+var target = get_target_of(get_player('Paladick'));
+    if(target && (!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
+		if (!in_attack_range(target)) {
+			move (
+			character.real_x + (target.real_x-character.real_x) / 2,
+			character.real_y + (target.real_y-character.real_y) / 2
+			);
+		}
+		else {
+			set_message("Cursing Target");
+        	lastcurse = new Date();
+        	parent.socket.emit("ability", {name: "curse", id: target.id});
+		}
+    }
+}
