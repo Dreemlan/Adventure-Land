@@ -1,0 +1,35 @@
+// MAGE DPS TANK
+
+setInterval(handlePots, 250);
+setInterval(attackTargetOfPlayer, 250);
+setInterval(loot, 250);
+
+function handlePots() {
+    //Heal and restore mana if required
+    if (character.hp < 600 && new Date() > parent.next_potion) {
+    buy("hpot1",1);
+        parent.use('hp');
+    }
+    if (character.mp < 2000 && new Date() > parent.next_potion) {
+    buy("mpot1",1);
+        parent.use('mp');
+    }
+}
+
+function attackTargetOfPlayer() {
+	var target = get_target_of(get_player('Paladick'));
+	if (!target) {
+		set_message("No Target");
+		return;
+	}
+	if (!in_attack_range(target)) {
+		move (
+			character.real_x+(target.real_x-character.real_x) / 2,
+			character.real_y+(target.real_y-character.real_y) / 2
+		);
+	}
+	else if (can_attack(target)) {
+		set_message("Attacking");
+		attack(target);
+	}
+}
