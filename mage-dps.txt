@@ -1,9 +1,12 @@
 // MAGE DPS TANK
 
+var invLength = character.items.length;
+
 setInterval(handlePots, 250);
 setInterval(attackTargetOfPlayer, 250);
 setInterval(loot, 250);
-setInterval(upgradeItem, 2000);
+//setInterval(upgradeItem, 500);
+setInterval(sellItem, 500);
 
 function handlePots() {
     //Heal and restore mana if required
@@ -11,7 +14,7 @@ function handlePots() {
     buy("hpot1",1);
         parent.use('hp');
     }
-    if (character.mp < 2000 && new Date() > parent.next_potion) {
+    if (character.mp < 1000 && new Date() > parent.next_potion) {
     buy("mpot1",1);
         parent.use('mp');
     }
@@ -39,7 +42,6 @@ function attackTargetOfPlayer() {
 function upgradeItem() {
 	var buyScroll0 = false;
 	var buyScroll1 = false;
-	var invLength = character.items.length;
 	
 	// CHECK WHOLE INVENTORY
 	for (var i = 0; i < invLength; i++) {
@@ -99,6 +101,16 @@ function upgradeItem() {
 				}
 			}
 			// END OF BUY + UPGRADE
+		}
+	}
+}
+
+// SELL ITEM
+function sellItem() {
+	for (var i = 0; i < invLength; i++) {
+		if (character.items[i] && character.items[i].name == "shield") {
+			if (character.items[i].level < 4)
+				sell(i);
 		}
 	}
 }
