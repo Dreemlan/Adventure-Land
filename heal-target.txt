@@ -1,10 +1,13 @@
 // HEAL
 
+var invLength = character.items.length;
+
 setInterval(handlePots, 250);
 setInterval(healTarget, 250);
 setInterval(curseTarget, 250);
 setInterval(loot, 250);
-setInterval(upgradeItem, 2000);
+//setInterval(upgradeItem, 500);
+setInterval(sellItem, 500);
 
 // HP/MP POTS
 function handlePots() {
@@ -124,6 +127,16 @@ function upgradeItem() {
 				}
 			}
 			// END OF BUY + UPGRADE
+		}
+	}
+}
+
+// SELL ITEM
+function sellItem() {
+	for (var i = 0; i < invLength; i++) {
+		if (character.items[i] && character.items[i].name == "shield") {
+			if (character.items[i].level < 4)
+				sell(i);
 		}
 	}
 }
