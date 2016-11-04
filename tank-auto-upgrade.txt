@@ -1,9 +1,12 @@
 // TANK + UPGRADE
 
+var invLength = character.items.length;
+
 setInterval(handlePots, 250);
 setInterval(attackTarget, 250);
 setInterval(loot, 250);
-setInterval(upgradeItem, 2000);
+//setInterval(upgradeItem, 500);
+setInterval(sellItem, 500);
 
 // HEAL + MP
 function handlePots() {
@@ -22,7 +25,7 @@ function handlePots() {
 function attackTarget() {
     var target = get_targeted_monster();
     if (!target) {
-        target = get_closest_monster({m_type_priority: "dknight2", m_type_secondary: "dknight2"});
+        target = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
         if (target)
 			change_target(target);
         else {
@@ -76,8 +79,7 @@ function get_closest_monster(args) {
 function upgradeItem() {
 	var buyScroll0 = false;
 	var buyScroll1 = false;
-	var invLength = character.items.length;
-	
+
 	// CHECK WHOLE INVENTORY
 	for (var i = 0; i < invLength; i++) {
 		// CHECK FOR ITEM TO UPGRADE
@@ -136,6 +138,16 @@ function upgradeItem() {
 				}
 			}
 			// END OF BUY + UPGRADE
+		}
+	}
+}
+
+// SELL ITEM
+function sellItem() {
+	for (var i = 0; i < invLength; i++) {
+		if (character.items[i] && character.items[i].name == "shield") {
+			if (character.items[i].level < 4)
+				sell(i);
 		}
 	}
 }
