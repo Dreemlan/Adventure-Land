@@ -133,6 +133,7 @@ function upgradeItem() {
 
 // SELL ITEM
 function sellItem() {
+	var invLength = character.items.length;
 	for (var i = 0; i < invLength; i++) {
 		if (character.items[i] && character.items[i].name == "shield") {
 			if (character.items[i].level < 4)
