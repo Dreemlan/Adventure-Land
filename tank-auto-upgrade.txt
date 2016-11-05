@@ -6,17 +6,17 @@ setInterval(loot, 250);
 //setInterval(upgradeItem, 500);
 setInterval(sellItem, 500);
 
-// HEAL + MP
+// HANDLE POTS
 function handlePots() {
-    //Heal and restore mana if required
-    if (character.hp < 1600 && new Date() > parent.next_potion) {
-    buy("hpot1",1);
-        parent.use('hp');
-    }
-    if (character.mp < 500 && new Date() > parent.next_potion) {
-    buy("mpot1",1);
-        parent.use('mp');
-    }
+	// HP
+	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
+	if (index == -1) buy('hpot1', 1);
+	if (character.hp < 2200) parent.use('hp');
+	
+	// MP
+	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
+	if (index2 == -1) buy('mpot1', 1);
+	if (character.mp < 300) parent.use('mp');
 }
 
 // ATTACK
