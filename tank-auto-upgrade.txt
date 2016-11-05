@@ -1,6 +1,7 @@
 // TANK + UPGRADE
 
 setInterval(handlePots, 250);
+setInterval(tauntTarget, 250);
 setInterval(attackTarget, 250);
 setInterval(loot, 250);
 //setInterval(upgradeItem, 500);
@@ -17,6 +18,34 @@ function handlePots() {
 	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
 	if (index2 == -1) buy('mpot1', 1);
 	if (character.mp < 300) parent.use('mp');
+}
+
+// TAUNT
+var lasttaunt;
+function tauntTarget() {
+    var target = get_targeted_monster();
+    if (!target) {
+        target = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
+        if (target)
+	    change_target(target);
+        else {
+            set_message("No Monsters");
+            return;
+        }
+    }
+    if (target && (!lasttaunt || new Date() - lasttaunt > 5000) && !target.taunted) {
+		if (!in_attack_range(target)) {
+			move (
+			character.real_x + (target.real_x-character.real_x) / 2,
+			character.real_y + (target.real_y-character.real_y) / 2
+			);
+		}
+		else {
+			set_message("Taunting Target");
+        	lasttaunt = new Date();
+        	parent.socket.emit("ability", {name: "taunt", id: target.id});
+		}
+    }
 }
 
 // ATTACK
