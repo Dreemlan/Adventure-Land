@@ -1,0 +1,32 @@
+setInterval(buyScroll, 1000);
+setInterval(buyItem, 10000);
+setInterval(upgradeMulti, 1000);
+
+
+function buyScroll() {
+	if (character.items[40].q < 500)
+		buy("scroll0", 1000);
+	if (character.items[41].q < 30)
+		buy("scroll1", 30);
+}
+
+
+function buyItem() {
+	for (var i = 0; i < 28; i++) {
+		if (character.items[i] == null) {
+			for (var i = 0; i < 28; i++)
+				buy("shoes");
+		}
+	}
+}
+	
+function upgradeMulti() {
+	for (var i = 0; i < 34; i++) {
+		if (character.items[i] != null) {
+			if (character.items[i].level < 7)
+				upgrade(i,40);
+			else if (character.items[i].level == 7)
+				upgrade(i,41);
+		}
+	}
+}
