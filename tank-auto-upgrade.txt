@@ -1,7 +1,5 @@
 // TANK + UPGRADE
 
-var invLength = character.items.length;
-
 setInterval(handlePots, 250);
 setInterval(attackTarget, 250);
 setInterval(loot, 250);
@@ -77,6 +75,7 @@ function get_closest_monster(args) {
 
 // UPGRADE ITEM	
 function upgradeItem() {
+	var invLength = character.items.length;
 	var buyScroll0 = false;
 	var buyScroll1 = false;
 
@@ -144,6 +143,7 @@ function upgradeItem() {
 
 // SELL ITEM
 function sellItem() {
+	var invLength = character.items.length;
 	for (var i = 0; i < invLength; i++) {
 		if (character.items[i] && character.items[i].name == "shield") {
 			if (character.items[i].level < 4)
