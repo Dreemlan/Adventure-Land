@@ -1,32 +1,44 @@
-setInterval(buyScroll, 1000);
-setInterval(buyItem, 10000);
-setInterval(upgradeMulti, 1000);
+setInterval(upgradeItem, 500);
 
+// UPGRADE ITEM	
+function upgradeItem() {
+	var invLength = character.items.length;
+	var buyScroll1 = false;
 
-function buyScroll() {
-	if (character.items[40].q < 500)
-		buy("scroll0", 1000);
-	if (character.items[41].q < 30)
-		buy("scroll1", 30);
-}
-
-
-function buyItem() {
-	for (var i = 0; i < 28; i++) {
-		if (character.items[i] == null) {
-			for (var i = 0; i < 28; i++)
-				buy("shoes");
-		}
-	}
-}
-	
-function upgradeMulti() {
-	for (var i = 0; i < 34; i++) {
-		if (character.items[i] != null) {
-			if (character.items[i].level < 7)
-				upgrade(i,40);
-			else if (character.items[i].level == 7)
-				upgrade(i,41);
+	// CHECK WHOLE INVENTORY
+	for (var i = 0; i < invLength; i++) {
+		// CHECK FOR ITEM TO UPGRADE
+		if (character.items[i] && character.items[i].name == "firestaff") {
+			// CHECK FOR SCROLLS, DO NOT BUY IF ANY EXIST
+			for (var j = 0; j < invLength; j++) {
+				if (character.items[j] && character.items[j].name == "scroll1") {
+					buyScroll1 = false;
+					break;
+				}
+				else buyScroll1 = true;
+			}
+			// END OF CHECK SCROLLS
+			
+			// BUY + UPGRADE
+			if (character.items[i].level < 7) {
+				if (character.gold > 50000) {
+					if (buyScroll1 == true) {
+						buy("scroll1", 1);
+						// LOOK FOR SCROLL THEN UPGRADE
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll1")
+								upgrade(i, k);
+						}
+					}
+					else {
+						for (var k = 0; k < invLength; k++) {
+							if (character.items[k] && character.items[k].name == "scroll1")
+								upgrade(i, k);
+						}
+					}
+				}
+			}
+			// END OF BUY + UPGRADE
 		}
 	}
 }
