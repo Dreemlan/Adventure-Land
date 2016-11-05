@@ -1,7 +1,5 @@
 // HEAL
 
-var invLength = character.items.length;
-
 setInterval(handlePots, 250);
 setInterval(healTarget, 250);
 setInterval(curseTarget, 250);
