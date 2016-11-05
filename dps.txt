@@ -1,0 +1,7 @@
+// DPS
+load_code(1);
+
+setInterval(handlePots, 250);
+setInterval(attackTargetOf, 250);
+setInterval(loot, 500);
+setInterval(sellItem, 5000);

@@ -1,0 +1,186 @@
+// COLLECTION
+//------------------------------------------------------------------
+
+// HANDLE POTS
+function handlePots() {
+	// HP
+	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
+	if (index == -1) buy('hpot1', 1);
+	if ((character.max_hp / character.hp) > 1.2) parent.use('hp');
+	
+	// MP
+	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
+	if (index2 == -1) buy('mpot1', 1);
+	if (character.max_mp / character.mp > 2) parent.use('mp');
+}
+//------------------------------------------------------------------
+
+// TAUNT
+function tauntDatShit() {
+	let closestEnemy = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
+	tauntEnemy(closestEnemy);
+}
+
+var lasttaunt;
+function tauntEnemy(target) {
+	if (target) change_target(target);
+	if (target && (!lasttaunt || new Date() - lasttaunt > 5000) && !target.taunted) {
+		if (!in_taunt_range(target)) {
+			move (
+				character.real_x + (target.real_x - character.real_x) / 2,
+				character.real_y + (target.real_y - character.real_y) / 2
+			);
+		}
+		else {
+			lasttaunt = new Date();
+			parent.socket.emit("ability", {name: "taunt", id: target.id});
+		}
+	}
+}
+
+// TAUNT RANGE
+function in_taunt_range(target) {
+	if (!target) return false;
+	if (parent.distance(character,target) <= 170) return true;
+	return false;
+}
+//------------------------------------------------------------------
+
+// ATTACK
+function attackDatShit() {
+	attackEnemy(get_targeted_monster());
+}
+function attackEnemy(target) {
+	if (target) {
+		if (!in_attack_range(target)) {
+			move(
+				character.real_x + (target.real_x - character.real_x) / 2,
+				character.real_y + (target.real_y - character.real_y) / 2
+				);
+		}
+		else if (can_attack(target)) {
+			set_message("Attacking");
+			attack(target);
+		}
+	}
+	else return;
+}
+//------------------------------------------------------------------
+
+// ATTACK TANK TARGET
+function attackTargetOf() {
+	var target = get_target_of(get_player('Paladick'));
+	var target2 = get_player('Paladick');
+	
+	var dist = 50;
+	if (target) {
+		if(distance(character, target2) > dist) {
+			move (
+				character.real_x + (target2.real_x - character.real_x) / 2,
+				character.real_y + (target2.real_y - character.real_y) / 2
+			);
+		}
+	}
+	else return;
+	
+	if (!target) {
+		set_message("No Target");
+		return;
+	}
+	if (!in_attack_range(target)) {
+		move (
+			character.real_x+(target.real_x-character.real_x) / 2,
+			character.real_y+(target.real_y-character.real_y) / 2
+		);
+	}
+	else if (can_attack(target)) {
+		set_message("Attacking");
+		attack(target);
+	}
+}
+//------------------------------------------------------------------
+
+// HEAL
+function healPlayer() {
+	var target = get_player('Paladick');
+	if (!target) {
+		set_message("No Target");
+		return;
+	}
+	else if (target.hp != target.max_hp) {
+		heal(target);
+		set_message("Healing");
+	}
+	else
+		set_message("Waiting to Heal");
+	
+	var dist = 75;
+	if (target) {
+		if(distance(character, target) > dist) {
+			move (
+				character.real_x + (target.real_x - character.real_x) / 2,
+				character.real_y + (target.real_y - character.real_y) / 2
+			);
+		}
+	}
+	else return;
+}
+//------------------------------------------------------------------
+
+// CURSE
+var lastcurse;
+function curseEnemy() {
+var target = get_target_of(get_player('Paladick'));
+    if(target && (!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
+		if (!in_attack_range(target)) {
+			move (
+			character.real_x + (target.real_x-character.real_x) / 2,
+			character.real_y + (target.real_y-character.real_y) / 2
+			);
+		}
+		else {
+			set_message("Cursing Target");
+        	lastcurse = new Date();
+        	parent.socket.emit("ability", {name: "curse", id: target.id});
+		}
+    }
+}
+//------------------------------------------------------------------
+
+// CUSTOM MTYPE TARGETING
+function get_closest_monster(args) {
+    //args:
+    // m_type_priority - the monster you want to attack (bosses)
+    // m_type_secondary -the monster you attack when your boss is not there
+    // target: Only return monsters that target this "name" or player object
+    // no_target: Only pick monsters that don't have any target
+    var min_d = 999999, target = null;
+    
+    if (args.m_type_priority == null && args.m_type_secondary == null) return null;
+    if (args && args.target && args.target.name) args.target = args.target.name;
+
+    for (id in parent.entities) {
+        var current = parent.entities[id];
+        if (current.type != "monster" || current.dead) continue;
+        if (current.target != null && current.target != character.name) continue;
+        var c_dist = parent.distance(character, current);
+        if (current.mtype == args.m_type_priority) return current;
+        else if (c_dist < min_d && current.mtype == args.m_type_secondary) {
+            min_d = c_dist;
+            target = current;
+        } 
+    }
+    return target;
+}
+//------------------------------------------------------------------
+
+// SELL ITEM
+function sellItem() {
+	var invLength = character.items.length;
+	for (var i = 0; i < invLength; i++) {
+		if (character.items[i] && character.items[i].name == "shield") {
+			if (character.items[i].level < 4)
+				sell(i);
+		}
+	}
+}
