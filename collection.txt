@@ -6,7 +6,7 @@ function handlePots() {
 	// HP
 	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
 	if (index == -1) buy('hpot1', 1);
-	if ((character.hp < character.max_hp) parent.use('hp');
+	if (character.hp < character.max_hp) parent.use('hp');
 	
 	// MP
 	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
@@ -19,7 +19,7 @@ function handlePotsTank() {
 	// HP
 	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
 	if (index == -1) buy('hpot1', 1);
-	if ((character.hp < 2000) parent.use('hp');
+	if (character.hp < 2000) parent.use('hp');
 	
 	// MP
 	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
