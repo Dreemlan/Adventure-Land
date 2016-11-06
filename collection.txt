@@ -90,7 +90,7 @@ function attackTargetOf() {
 	var target2 = get_player('Paladick');
 	
 	var dist = 30;
-	if (target) {
+	if (target2) {
 		if(distance(character, target2) > dist) {
 			move (
 				character.real_x + (target2.real_x - character.real_x) / 2,
@@ -98,7 +98,6 @@ function attackTargetOf() {
 			);
 		}
 	}
-	else return;
 	
 	if (!target) {
 		set_message("No Target");
