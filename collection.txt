@@ -89,6 +89,7 @@ function attackTargetOf() {
 	var target = get_target_of(get_player('Paladick'));
 	var target2 = get_player('Paladick');
 	
+	/*
 	var dist = 30;
 	if (target2) {
 		if(distance(character, target2) > dist) {
@@ -98,6 +99,7 @@ function attackTargetOf() {
 			);
 		}
 	}
+	*/
 	
 	if (!target) {
 		set_message("No Target");
@@ -130,6 +132,7 @@ function healPlayer() {
 	else
 		set_message("Waiting to Heal");
 	
+	/*
 	var dist = 30;
 	if (target) {
 		if(distance(character, target) > dist) {
@@ -140,6 +143,7 @@ function healPlayer() {
 		}
 	}
 	else return;
+	*/
 }
 //------------------------------------------------------------------
 
