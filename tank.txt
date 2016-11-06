@@ -1,7 +1,7 @@
 // TANK
 load_code(1);
 
-setInterval(handlePots, 250);
+setInterval(handlePotsTank, 250);
 setInterval(tauntDatShit, 250);
 setInterval(attackDatShit, 250);
 setInterval(loot, 500);
