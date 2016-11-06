@@ -6,7 +6,20 @@ function handlePots() {
 	// HP
 	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
 	if (index == -1) buy('hpot1', 1);
-	if ((character.max_hp / character.hp) > 1.1) parent.use('hp');
+	if ((character.hp < character.max_hp) parent.use('hp');
+	
+	// MP
+	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
+	if (index2 == -1) buy('mpot1', 1);
+	if (character.max_mp / character.mp > 2) parent.use('mp');
+}
+
+// HANDLE POTS - TANK
+function handlePotsTank() {
+	// HP
+	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
+	if (index == -1) buy('hpot1', 1);
+	if ((character.hp < 2000) parent.use('hp');
 	
 	// MP
 	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
@@ -17,8 +30,12 @@ function handlePots() {
 
 // TAUNT
 function tauntDatShit() {
-	let closestEnemy = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
-	tauntEnemy(closestEnemy);
+	let enemy = get_targeted_monster();
+	if (!enemy) {
+		enemy = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
+		tauntEnemy(enemy);
+	}
+	else tauntEnemy(enemy);
 }
 
 var lasttaunt;
@@ -72,7 +89,7 @@ function attackTargetOf() {
 	var target = get_target_of(get_player('Paladick'));
 	var target2 = get_player('Paladick');
 	
-	var dist = 50;
+	var dist = 30;
 	if (target) {
 		if(distance(character, target2) > dist) {
 			move (
@@ -114,7 +131,7 @@ function healPlayer() {
 	else
 		set_message("Waiting to Heal");
 	
-	var dist = 75;
+	var dist = 30;
 	if (target) {
 		if(distance(character, target) > dist) {
 			move (
