@@ -19,7 +19,7 @@ function handlePotsTank() {
 	// HP
 	let index = character.items.findIndex((item) => item && item.name === 'hpot1');
 	if (index == -1) buy('hpot1', 1);
-	if (character.hp < 2000) parent.use('hp');
+	if (character.hp < 1900) parent.use('hp');
 	
 	// MP
 	let index2 = character.items.findIndex((item) => item && item.name === 'mpot1');
@@ -89,7 +89,6 @@ function attackTargetOf() {
 	var target = get_target_of(get_player('Paladick'));
 	var target2 = get_player('Paladick');
 	
-	/*
 	var dist = 30;
 	if (target2) {
 		if(distance(character, target2) > dist) {
@@ -99,27 +98,32 @@ function attackTargetOf() {
 			);
 		}
 	}
-	*/
 	
 	if (!target) {
 		set_message("No Target");
 		return;
 	}
-	if (!in_attack_range(target)) {
-		move (
-			character.real_x+(target.real_x-character.real_x) / 2,
-			character.real_y+(target.real_y-character.real_y) / 2
-		);
-	}
-	else if (can_attack(target)) {
-		set_message("Attacking");
-		attack(target);
+	
+	if (target.target != null) {
+		if (!in_attack_range(target)) {
+			move (
+				character.real_x+(target.real_x-character.real_x) / 2,
+				character.real_y+(target.real_y-character.real_y) / 2
+			);
+		}
+		else if (can_attack(target)) {
+			set_message("Attacking");
+			attack(target);
+		}
 	}
 }
 //------------------------------------------------------------------
 
 // HEAL
 function healPlayer() {
+	if (character.hp < character.max_hp) {
+		
+	}
 	var target = get_player('Paladick');
 	if (!target) {
 		set_message("No Target");
@@ -132,7 +136,6 @@ function healPlayer() {
 	else
 		set_message("Waiting to Heal");
 	
-	/*
 	var dist = 30;
 	if (target) {
 		if(distance(character, target) > dist) {
@@ -143,7 +146,6 @@ function healPlayer() {
 		}
 	}
 	else return;
-	*/
 }
 //------------------------------------------------------------------
 
@@ -151,7 +153,7 @@ function healPlayer() {
 var lastcurse;
 function curseEnemy() {
 var target = get_target_of(get_player('Paladick'));
-    if(target && (!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
+    if(target && target.target != null && (!lastcurse || new Date() - lastcurse > 5000) && !target.cursed) {
 		if (!in_attack_range(target)) {
 			move (
 			character.real_x + (target.real_x-character.real_x) / 2,
