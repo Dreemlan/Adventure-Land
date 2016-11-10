@@ -198,11 +198,10 @@ function get_closest_monster(args) {
 
 // SELL ITEM
 function sellItem() {
-	var invLength = character.items.length;
-	for (var i = 0; i < invLength; i++) {
-		if (character.items[i] && character.items[i].name == "shield" || character.items[i].name == "firestaff" || character.items[i].name == "fireblade") {
-			if (character.items[i].level < 4) sell(i);
+	for (var i = 0; i < character.items.length; i++) {
+		if (character.items[i] && character.items[i].level < 4 && 
+			character.items[i].name == "shield") {
+			sell(i);
 		}
-		else return;
 	}
 }
