@@ -32,7 +32,7 @@ function handlePotsTank() {
 function tauntDatShit() {
 	let enemy = get_targeted_monster();
 	if (!enemy) {
-		enemy = get_closest_monster({m_type_priority: "phoenix", m_type_secondary: "dknight2"});
+		enemy = get_closest_monster({no_target: true, m_type_priority: "phoenix", m_type_secondary: "dknight2"});
 		tauntEnemy(enemy);
 	}
 	else tauntEnemy(enemy);
@@ -200,9 +200,9 @@ function get_closest_monster(args) {
 function sellItem() {
 	var invLength = character.items.length;
 	for (var i = 0; i < invLength; i++) {
-		if (character.items[i] && character.items[i].name == "shield") {
-			if (character.items[i].level < 4)
-				sell(i);
+		if (character.items[i] && character.items[i].name == "shield" || character.items[i].name == "firestaff" || character.items[i].name == "fireblade") {
+			if (character.items[i].level < 4) sell(i);
 		}
+		else return;
 	}
 }
